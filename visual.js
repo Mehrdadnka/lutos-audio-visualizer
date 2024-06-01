@@ -16,7 +16,7 @@ const fragmentShaderSource = `
     precision mediump float;
     uniform vec2 iResolution;
     uniform float iTime;
-    uniform float iAudioFreq[256];
+    uniform float iAudioFreq[64];
     #define TAU 6.28318530718
     float time_scale = 0.5;
     float angle_div = 0.6;
@@ -59,7 +59,7 @@ const fragmentShaderSource = `
         for (int i = 0; i < 64; i++) {
             audioSum += iAudioFreq[i];
         }
-        float audioAvg = audioSum / 256.0;
+        float audioAvg = audioSum / 64.0;
 
         float d = makeThing(uv, t, audioAvg);
         vec3 col = mix(color, color2, d);
@@ -119,7 +119,7 @@ async function main(audioBuffer) {
     // Set up audio context and analyzer
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     const analyser = audioCtx.createAnalyser();
-    analyser.fftSize = 512;
+    analyser.fftSize = 1024;
     const bufferLength = analyser.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength);
 
